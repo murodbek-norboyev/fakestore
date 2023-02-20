@@ -10,7 +10,7 @@ defineProps(["product"]);
 
     <v-card-item>
       <RouterLink
-        class="text-black text-decoration-none"
+        class="text-black text-decoration-none v-card-title"
         :to="`/product/${product.id}`"
       >
         {{ product.title }}
