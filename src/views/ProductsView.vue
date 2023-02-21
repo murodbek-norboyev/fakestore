@@ -10,16 +10,28 @@ const { fetchProducts, fetchCategories } = useProductStore();
 fetchProducts();
 fetchCategories();
 
-const selectedCategories = ref([]);
-const priceRange = ref([0, 100]);
+const filterCategories = ref([]);
+const sortProducts = ref(null);
+const priceRange = ref([0, 200]);
+const sortlist = ["Price high - low", "Price low - high", "Alphabetically"];
 
 const filteredProducts = computed(() => {
   let filtered = products.value;
 
-  if (selectedCategories.value.length > 0) {
+  if (filterCategories.value.length > 0) {
     filtered = filtered.filter((product) =>
-      selectedCategories.value.includes(product.category)
+      filterCategories.value.includes(product.category)
     );
+  }
+
+  if (sortProducts.value != null) {
+    if (sortProducts.value === 0) {
+      filtered = filtered.sort((a, b) => b.price - a.price);
+    } else if (sortProducts.value === 1) {
+      filtered = filtered.sort((a, b) => a.price - b.price);
+    } else {
+      filtered = filtered.sort((a, b) => a.title.localeCompare(b.title));
+    }
   }
 
   // filtered = filtered.filter(
@@ -30,24 +42,6 @@ const filteredProducts = computed(() => {
 
   return filtered;
 });
-
-// const filteredProducts = computed(() => {
-//   if (selectedCategories.value.length === 0) {
-//     return products.value;
-//   } else {
-//     return products.value.filter((product) => {
-//       return selectedCategories.value.includes(product.category);
-//     });
-//   }
-// });
-
-// const filteredProducts = computed(() => {
-//   return products.value.filter(
-//     (product) =>
-//       product.price >= filterPrice.value[0] &&
-//       product.price <= filterPrice.value[1]
-//   );
-// });
 </script>
 
 <template>
@@ -62,7 +56,7 @@ const filteredProducts = computed(() => {
             <v-checkbox
               v-for="(category, index) in categories"
               :key="index"
-              v-model="selectedCategories"
+              v-model="filterCategories"
               :label="category"
               hide-details
               :value="category"
@@ -85,6 +79,25 @@ const filteredProducts = computed(() => {
       </v-col>
       <v-col lg="9">
         <v-row>
+          <v-col cols="12">
+            <v-card>
+              <v-card-item>
+                <v-radio-group
+                  v-model="sortProducts"
+                  color="primary"
+                  inline
+                  hide-details
+                >
+                  <v-radio
+                    v-for="(item, index) in sortlist"
+                    :label="item"
+                    :value="index"
+                    :key="index"
+                  ></v-radio>
+                </v-radio-group>
+              </v-card-item>
+            </v-card>
+          </v-col>
           <v-col lg="3" v-for="product in filteredProducts" :key="product.id">
             <ProductCard :product="product" />
           </v-col>
