@@ -3,7 +3,8 @@ import { useCartStore } from "@/stores/cart";
 import { storeToRefs } from "pinia";
 
 const { items } = storeToRefs(useCartStore());
-const { removeItem, clear } = useCartStore();
+const { removeItem, clear, quantityIncrement, quantityDecrement } =
+  useCartStore();
 </script>
 
 <template>
@@ -44,6 +45,9 @@ const { removeItem, clear } = useCartStore();
                     <p class="text-h6 text-truncate" style="max-width: 600px">
                       {{ item.title }}
                     </p>
+                    <div @click="quantityDecrement(item)">-</div>
+                    <div>{{ item.quantity }}</div>
+                    <div @click="quantityIncrement(item)">+</div>
                   </div>
                 </div>
                 <div>

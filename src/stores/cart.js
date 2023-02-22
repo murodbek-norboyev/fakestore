@@ -5,6 +5,17 @@ export const useCartStore = defineStore("cart", {
     items: [],
     total: null,
   }),
+  getters: {
+    totalQuantity() {
+      return this.items.reduce((total, item) => total + item.quantity, 0);
+    },
+    totalPrice() {
+      return this.items.reduce(
+        (total, item) => total + item.price * item.quantity,
+        0
+      );
+    },
+  },
   actions: {
     addItem(item) {
       const existing = this.items.find((i) => i.id === item.id);
@@ -25,6 +36,14 @@ export const useCartStore = defineStore("cart", {
     },
     clear() {
       this.items = [];
+      this._saveToLocalStorage();
+    },
+    quantityIncrement(item) {
+      item.quantity += 1;
+      this._saveToLocalStorage();
+    },
+    quantityDecrement(item) {
+      item.quantity -= 1;
       this._saveToLocalStorage();
     },
     _saveToLocalStorage() {
