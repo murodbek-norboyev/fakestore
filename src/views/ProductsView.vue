@@ -11,9 +11,12 @@ fetchProducts();
 fetchCategories();
 
 const filterCategories = ref([]);
-const sortProducts = ref(null);
-const priceRange = ref([0, 200]);
-const sortlist = ["Price high - low", "Price low - high", "Alphabetically"];
+const sortlist = [
+  { title: "Price high - low" },
+  { title: "Price low - high" },
+  { title: "Alphabetically" },
+];
+const selectedSort = ref(null);
 
 const filteredProducts = computed(() => {
   let filtered = products.value;
@@ -24,21 +27,15 @@ const filteredProducts = computed(() => {
     );
   }
 
-  if (sortProducts.value != null) {
-    if (sortProducts.value === 0) {
+  if (selectedSort.value != null) {
+    if (selectedSort.value === 0) {
       filtered = filtered.sort((a, b) => b.price - a.price);
-    } else if (sortProducts.value === 1) {
+    } else if (selectedSort.value === 1) {
       filtered = filtered.sort((a, b) => a.price - b.price);
     } else {
       filtered = filtered.sort((a, b) => a.title.localeCompare(b.title));
     }
   }
-
-  // filtered = filtered.filter(
-  //   (product) =>
-  //     product.price >= priceRange.value[0] &&
-  //     product.price <= priceRange.value[1]
-  // );
 
   return filtered;
 });
@@ -65,36 +62,28 @@ const filteredProducts = computed(() => {
             ></v-checkbox>
           </v-card-item>
         </v-card>
-        <v-card>
-          <v-card-title>Choose price range:</v-card-title>
-          <v-divider />
-          <div class="pt-10 px-6">
-            <v-range-slider
-              v-model="priceRange"
-              step="1"
-              thumb-label="always"
-            ></v-range-slider>
-          </div>
-        </v-card>
       </v-col>
       <v-col lg="9">
         <v-row>
           <v-col cols="12">
             <v-card>
               <v-card-item>
-                <v-radio-group
-                  v-model="sortProducts"
-                  color="primary"
-                  inline
-                  hide-details
-                >
-                  <v-radio
+                <v-row>
+                  <v-col
+                    lg="auto"
                     v-for="(item, index) in sortlist"
-                    :label="item"
-                    :value="index"
-                    :key="index"
-                  ></v-radio>
-                </v-radio-group>
+                    :key="item.title"
+                  >
+                    <div
+                      role="button"
+                      :class="{ 'text-primary': selectedSort === index }"
+                      class="font-weight-medium"
+                      @click="selectedSort = index"
+                    >
+                      {{ item.title }}
+                    </div>
+                  </v-col>
+                </v-row>
               </v-card-item>
             </v-card>
           </v-col>
