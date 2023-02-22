@@ -1,7 +1,7 @@
 <script setup>
 import { defineProps } from "vue";
 import { useCartStore } from "@/stores/cart";
-const store = useCartStore();
+const { addItem } = useCartStore();
 
 const props = defineProps(["product"]);
 </script>
@@ -47,7 +47,7 @@ const props = defineProps(["product"]);
       <v-btn
         color="deep-purple-lighten-2"
         variant="text"
-        @click="store.addItem(product)"
+        @click="addItem(product)"
       >
         Add to cart</v-btn
       >

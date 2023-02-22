@@ -9,16 +9,15 @@ export const useCartStore = defineStore("cart", {
     addItem(item) {
       const existing = this.items.find((i) => i.id === item.id);
       if (existing) {
-        existing.quantity += item.quantity;
+        existing.quantity += 1;
       } else {
+        item.quantity = 1;
         this.items.push(item);
       }
       this._saveToLocalStorage();
     },
     removeItem(item) {
-      const index = this.items.findIndex(
-        (i) => i.product.id === item.product.id
-      );
+      const index = this.items.findIndex((i) => i.id === item.id);
       if (index >= 0) {
         this.items.splice(index, 1);
       }

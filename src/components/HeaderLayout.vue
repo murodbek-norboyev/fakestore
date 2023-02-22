@@ -12,7 +12,7 @@ initialize();
       <router-link class="text-decoration-none" to="/">Fake store</router-link>
     </v-app-bar-title>
     <v-spacer />
-    <v-btn class="text-none" stacked>
+    <v-btn class="text-none" stacked to="/cart">
       <v-badge :content="items.length" color="primary">
         <v-icon>mdi-cart</v-icon>
       </v-badge>
