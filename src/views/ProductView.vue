@@ -2,11 +2,14 @@
 import { useRoute } from "vue-router";
 import { storeToRefs } from "pinia";
 import { useProductStore } from "@/stores/product";
+import { useCartStore } from "@/stores/cart";
 
 const route = useRoute();
 const { product, loading } = storeToRefs(useProductStore());
 const { fetchProduct } = useProductStore();
 fetchProduct(route.params.id);
+
+const { addItem, isInCart } = useCartStore();
 </script>
 
 <template>
@@ -48,7 +51,14 @@ fetchProduct(route.params.id);
                   <span class="text-h6 text-blue">Description:</span>
                   {{ product.description }}
                 </div>
-                <v-btn color="primary">Add to cart</v-btn>
+                <v-btn
+                  v-if="!isInCart(product.id)"
+                  color="primary"
+                  @click="addItem(product)"
+                >
+                  Add to cart</v-btn
+                >
+                <v-btn v-else>in the cart</v-btn>
               </v-card-text>
             </v-card>
           </v-col>

@@ -2,8 +2,6 @@
 import { storeToRefs } from "pinia";
 import { useCartStore } from "@/stores/cart";
 const { totalQuantity } = storeToRefs(useCartStore());
-const { initialize } = useCartStore();
-initialize();
 </script>
 
 <template>
@@ -14,9 +12,9 @@ initialize();
     <v-spacer />
     <v-btn class="text-none" stacked to="/cart">
       <v-badge
+        v-if="totalQuantity > 0"
         :content="totalQuantity"
         color="primary"
-        v-if="totalQuantity > 0"
       >
         <v-icon>mdi-cart</v-icon>
       </v-badge>
