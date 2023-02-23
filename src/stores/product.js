@@ -14,7 +14,7 @@ export const useProductStore = defineStore("product", {
     async fetchProducts() {
       this.loading = true;
       try {
-        const response = await api.get("https://fakestoreapi.com/products");
+        const response = await api.get("/products");
         this.products = response.data;
       } catch (error) {
         toast.error(error.message);
@@ -24,9 +24,7 @@ export const useProductStore = defineStore("product", {
     },
     async fetchCategories() {
       try {
-        const response = await api.get(
-          "https://fakestoreapi.com/products/categories"
-        );
+        const response = await api.get("/products/categories");
         this.categories = response.data;
       } catch (error) {
         toast.error(error.message);
@@ -37,9 +35,7 @@ export const useProductStore = defineStore("product", {
     async fetchProduct(id) {
       try {
         this.loading = true;
-        const response = await api.get(
-          `https://fakestoreapi.com/products/${id}`
-        );
+        const response = await api.get(`/products/${id}`);
         this.product = response.data;
       } catch (error) {
         toast.error(error.message);
