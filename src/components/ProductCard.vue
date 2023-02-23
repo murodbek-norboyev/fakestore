@@ -7,7 +7,7 @@ const props = defineProps(["product"]);
 </script>
 
 <template>
-  <v-card>
+  <v-card elevation="3" class="pt-4">
     <v-img height="250" :src="props.product.image"></v-img>
 
     <v-card-item>

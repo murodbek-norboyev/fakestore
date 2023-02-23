@@ -1,10 +1,10 @@
 <script setup>
 import { useCartStore } from "@/stores/cart";
 import { storeToRefs } from "pinia";
+import CartItem from "@/components/CartItem.vue";
 
-const { items } = storeToRefs(useCartStore());
-const { removeItem, clear, quantityIncrement, quantityDecrement } =
-  useCartStore();
+const { items, totalQuantity, totalPrice } = storeToRefs(useCartStore());
+const { clear } = useCartStore();
 </script>
 
 <template>
@@ -15,6 +15,7 @@ const { removeItem, clear, quantityIncrement, quantityDecrement } =
           <div class="d-flex align-center justify-space-between">
             <h1>Cart</h1>
             <v-btn
+              v-if="items.length"
               append-icon="mdi-delete"
               variant="text"
               color="red"
@@ -25,40 +26,26 @@ const { removeItem, clear, quantityIncrement, quantityDecrement } =
           </div>
         </v-card>
       </v-col>
-      <v-col lg="8">
+      <v-col cols="12" v-if="items.length">
         <v-row>
-          <v-col cols="12" v-for="item in items" :key="item.id">
-            <v-card class="py-3 ps-3 pe-10">
-              <div class="d-flex align-center justify-space-between">
-                <div class="d-flex align-center">
-                  <v-btn
-                    variant="text"
-                    icon
-                    color="red"
-                    class="me-5"
-                    @click="removeItem(item)"
-                  >
-                    <v-icon>mdi-delete</v-icon>
-                  </v-btn>
-                  <div>
-                    <p class="font-weight-bold text-h5">{{ item.price }} $</p>
-                    <p class="text-h6 text-truncate" style="max-width: 600px">
-                      {{ item.title }}
-                    </p>
-                    <div @click="quantityDecrement(item)">-</div>
-                    <div>{{ item.quantity }}</div>
-                    <div @click="quantityIncrement(item)">+</div>
-                  </div>
-                </div>
-                <div>
-                  <v-img :src="item.image" width="100" />
-                </div>
-              </div>
+          <v-col lg="8">
+            <v-row>
+              <v-col cols="12" v-for="item in items" :key="item.id">
+                <CartItem :item="item" />
+              </v-col>
+            </v-row>
+          </v-col>
+          <v-col lg="4">
+            <v-card class="pa-3" elevation="3">
+              <div class="text-h5">Total quantity: {{ totalQuantity }}</div>
+              <div class="text-h5">Total price: {{ totalPrice }}</div>
             </v-card>
           </v-col>
         </v-row>
       </v-col>
-      <v-col lg="4"></v-col>
+      <v-col cols="12" v-else>
+        <div>You have no items in your shopping cart!</div>
+      </v-col>
     </v-row>
   </v-container>
 </template>

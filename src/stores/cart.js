@@ -3,17 +3,20 @@ import { defineStore } from "pinia";
 export const useCartStore = defineStore("cart", {
   state: () => ({
     items: [],
-    total: null,
+    totalQuantity: null,
+    totalPrice: null,
   }),
   getters: {
-    totalQuantity() {
-      return this.items.reduce((total, item) => total + item.quantity, 0);
-    },
-    totalPrice() {
-      return this.items.reduce(
-        (total, item) => total + item.price * item.quantity,
+    calcTotalQuantity(state) {
+      state.totalQuantity = this.items.reduce(
+        (total, item) => total + item.quantity,
         0
       );
+    },
+    calctTotalPrice(state) {
+      state.totalPrice = this.items
+        .reduce((total, item) => total + item.price * item.quantity, 0)
+        .toFixed(2);
     },
   },
   actions: {
@@ -43,7 +46,7 @@ export const useCartStore = defineStore("cart", {
       this._saveToLocalStorage();
     },
     quantityDecrement(item) {
-      item.quantity -= 1;
+      if (item.quantity > 1) item.quantity -= 1;
       this._saveToLocalStorage();
     },
     _saveToLocalStorage() {
