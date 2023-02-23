@@ -10,7 +10,7 @@ const { totalQuantity } = storeToRefs(useCartStore());
       <router-link class="text-decoration-none" to="/">Fake store</router-link>
     </v-app-bar-title>
     <v-spacer />
-    <v-btn class="text-none" stacked to="/cart">
+    <v-btn class="text-none" icon to="/cart">
       <v-badge
         v-if="totalQuantity > 0"
         :content="totalQuantity"

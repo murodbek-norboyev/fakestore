@@ -20,9 +20,13 @@ const { removeItem, quantityIncrement, quantityDecrement } = useCartStore();
         </v-btn>
         <div>
           <p class="font-weight-bold text-h5">{{ item.price }} $</p>
-          <p class="text-h6 text-truncate" style="max-width: 600px">
+          <RouterLink
+            class="text-black text-decoration-none d-inline-block text-h6 text-truncate"
+            style="max-width: 600px"
+            :to="`/product/${item.id}`"
+          >
             {{ item.title }}
-          </p>
+          </RouterLink>
           <div class="d-flex align-center mt-6">
             <v-btn @click="quantityDecrement(item)">
               <v-icon>mdi-minus</v-icon>
