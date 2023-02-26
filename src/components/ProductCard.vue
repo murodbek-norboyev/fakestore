@@ -3,7 +3,7 @@ import { defineProps } from "vue";
 import { useCartStore } from "@/stores/cart";
 const { addItem, isInCart } = useCartStore();
 
-const props = defineProps(["product"]);
+defineProps(["product"]);
 </script>
 
 <template>
@@ -19,7 +19,7 @@ const props = defineProps(["product"]);
       </RouterLink>
 
       <v-card-subtitle>
-        <span class="text-uppercase">{{ props.product.category }}</span>
+        <span class="text-uppercase">{{ product.category }}</span>
       </v-card-subtitle>
     </v-card-item>
 
